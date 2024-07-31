@@ -9543,7 +9543,8 @@ void CmPrintStatusToListView(LVB* b, RPC_CLIENT_GET_CONNECTION_STATUS* s)
 }
 void CmPrintStatusToListViewEx(LVB* b, RPC_CLIENT_GET_CONNECTION_STATUS* s, bool server_mode)
 {
-    wchar_t tmp[MAX_SIZE];
+    wchar_t tmp[MAX_SIZE], tmp2[MAX_SIZE];
+    wchar_t human_str[MAX_SIZE];
     char str[MAX_SIZE];
     char vv[128];
     // Validate arguments
@@ -9730,11 +9731,15 @@ void CmPrintStatusToListViewEx(LVB* b, RPC_CLIENT_GET_CONNECTION_STATUS* s, bool
 
         ToStr3(vv, sizeof(vv), s->TotalSendSize);
         UniFormat(tmp, sizeof(tmp), _UU("CM_ST_SIZE_BYTE_STR"), vv);
-        LvInsertAdd(b, 0, NULL, 2, _UU("CM_ST_SEND_SIZE"), tmp);
+        toHuman(s->TotalSendSize, human_str, sizeof(human_str));
+        swprintf(tmp2, sizeof(tmp2), L"%s (%s)", human_str, tmp);
+        LvInsertAdd(b, 0, NULL, 2, _UU("CM_ST_SEND_SIZE"), tmp2);
 
         ToStr3(vv, sizeof(vv), s->TotalRecvSize);
         UniFormat(tmp, sizeof(tmp), _UU("CM_ST_SIZE_BYTE_STR"), vv);
-        LvInsertAdd(b, 0, NULL, 2, _UU("CM_ST_RECV_SIZE"), tmp);
+        toHuman(s->TotalRecvSize, human_str, sizeof(human_str));
+        swprintf(tmp2, sizeof(tmp2), L"%s (%s)", human_str, tmp);
+        LvInsertAdd(b, 0, NULL, 2, _UU("CM_ST_RECV_SIZE"), tmp2);
 
         ToStr3(vv, sizeof(vv), s->Traffic.Send.UnicastCount);
         UniFormat(tmp, sizeof(tmp), _UU("CM_ST_NUM_PACKET_STR"), vv);
