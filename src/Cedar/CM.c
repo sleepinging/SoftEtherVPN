@@ -34,7 +34,7 @@
 #include <shellapi.h>
 
 enum TimerId {
-    kRefreshUsage = 7,
+    kTimerIdRefreshUsage = 7,
 };
 
 void toHuman(UINT64 byte, wchar_t* buf, UINT size) {
@@ -4291,7 +4291,7 @@ UINT CmMainWindowProc(HWND hWnd, UINT msg, WPARAM wParam, LPARAM lParam, void* p
                 }
             }
             break;
-        case kRefreshUsage:
+        case kTimerIdRefreshUsage:
             // Update the account list
             CmRefreshAccountListEx2(hWnd, false, false);
             break;
@@ -11602,7 +11602,7 @@ void CmRefreshStatusBar(HWND hWnd)
         UniStrCpy(cm->StatudBar2, sizeof(cm->StatudBar2), _UU("CM_CONN_NO"));
         cm->Icon2 = LoadSmallIcon(ICO_SERVER_OFFLINE);
 
-        KillTimer(hWnd, kRefreshUsage);
+        KillTimer(hWnd, kTimerIdRefreshUsage);
     }
     else
     {
@@ -11610,7 +11610,7 @@ void CmRefreshStatusBar(HWND hWnd)
         cm->Icon2 = LoadSmallIcon(ICO_SERVER_ONLINE);
 
         // 定时刷新
-        SetTimer(hWnd, kRefreshUsage, 1000, NULL);
+        SetTimer(hWnd, kTimerIdRefreshUsage, 1000, NULL);
     }
 
     CmRedrawStatusBar(hWnd);
